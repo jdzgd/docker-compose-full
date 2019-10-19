@@ -14,17 +14,15 @@ services:
     volumes:
       - ./redis1/conf/redis.conf:/etc/redis/redis.conf
       - ./redis1/data:/data
-    network_mode: "host"
+#    network_mode: "host"
+    environment:
+      TZ: Asia/Shanghai
 
   redis2:
     image: redis:5.0.6
     container_name: redis2
-    command: redis-server /etc/redis/redis.conf
+    command: redis-server /etc/redis/redis.conf --slaveof redis1 6379
     ports:
-#      - target: 6379
-#        published: 20002
-#        protocol: tcp
-#        mode: host
       - "20002:6739/tcp"
     privileged: true
     volumes:
@@ -32,4 +30,38 @@ services:
       - ./redis2/data:/data
     depends_on:
       - redis1
-    network_mode: "host"
+#    network_mode: "host"
+    environment:
+      TZ: Asia/Shanghai
+
+  redis3:
+    image: redis:5.0.6
+    container_name: redis3
+    command: redis-server /etc/redis/redis.conf --slaveof redis1 6379
+    ports:
+      - "20003:6739/tcp"
+    privileged: true
+    volumes:
+      - ./redis3/conf/redis.conf:/etc/redis/redis.conf
+      - ./redis3/data:/data
+    depends_on:
+      - redis1
+    #    network_mode: "host"
+    environment:
+      TZ: Asia/Shanghai
+
+  redis4:
+    image: redis:5.0.6
+    container_name: redis4
+    command: redis-sentinel /etc/redis/sentinel.conf
+    ports:
+      - "20004:6739/tcp"
+    privileged: true
+    volumes:
+      - ./redis4/conf/sentinel.conf:/etc/redis/sentinel.conf
+      - ./redis4/data:/data
+    depends_on:
+      - redis1
+    #    network_mode: "host"
+    environment:
+      TZ: Asia/Shanghai
