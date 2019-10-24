@@ -1,7 +1,7 @@
 version: '2'
 services:
   redis1:
-    image: redis:5.0.6
+    image: redis:${REDIS_VERSION}
     container_name: redis1
     command: redis-server /etc/redis/redis.conf
     ports:
@@ -19,7 +19,7 @@ services:
       TZ: Asia/Shanghai
 
   redis2:
-    image: redis:5.0.6
+    image: redis:${REDIS_VERSION}
     container_name: redis2
     command: redis-server /etc/redis/redis.conf --slaveof redis1 6379
     ports:
@@ -35,7 +35,7 @@ services:
       TZ: Asia/Shanghai
 
   redis3:
-    image: redis:5.0.6
+    image: redis:${REDIS_VERSION}
     container_name: redis3
     command: redis-server /etc/redis/redis.conf --slaveof redis1 6379
     ports:
@@ -51,7 +51,7 @@ services:
       TZ: Asia/Shanghai
 
   redis4:
-    image: redis:5.0.6
+    image: redis:${REDIS_VERSION}
     container_name: redis4
     command: redis-sentinel /etc/redis/sentinel.conf
     ports:
