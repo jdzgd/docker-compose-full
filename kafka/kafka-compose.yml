@@ -13,8 +13,8 @@ services:
 #      ZOO_SERVERS: server.1=zookeeper1:2888:3888
       TZ: Asia/Shanghai
     volumes:
-      - ./kafka/zoo1/data:/data
-      - ./kafka/zoo1/datalog:/datalog
+      - ./zoo1/data:/data
+      - ./zoo1/datalog:/datalog
 
   kafka1:
     container_name: kafka1
@@ -28,7 +28,7 @@ services:
       KAFKA_BROKER_ID: 1
       TZ: Asia/Shanghai
     volumes:
-      - ./kafka/kafka1/data:/var/lib/kafka/data
+      - ./kafka1/data:/var/lib/kafka/data
     depends_on:
       - zookeeper1
 
@@ -44,7 +44,7 @@ services:
       KAFKA_BROKER_ID: 2
       TZ: Asia/Shanghai
     volumes:
-      - ./kafka/kafka2/data:/var/lib/kafka/data
+      - ./kafka2/data:/var/lib/kafka/data
     depends_on:
       - zookeeper1
 
@@ -60,7 +60,7 @@ services:
       KAFKA_BROKER_ID: 3
       TZ: Asia/Shanghai
     volumes:
-      - ./kafka/kafka3/data:/var/lib/kafka/data
+      - ./kafka3/data:/var/lib/kafka/data
     depends_on:
       - zookeeper1
 
