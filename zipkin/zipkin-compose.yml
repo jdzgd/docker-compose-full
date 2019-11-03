@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  zipkin:
+    image: openzipkin/zipkin:2.19.1
+    container_name: photoshoot-zipkin
+    ports:
+    - 39411:9411
+    restart: always
+    environment:
+    - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
+    - STORAGE_TYPE=mem
+    - COLLECTOR_SAMPLE_RATE=1.0
