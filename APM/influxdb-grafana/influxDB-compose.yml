@@ -18,8 +18,6 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
-    env_file:
-      - 'env.grafana'
     user: "0"
     environment:
       GF_INSTALL_PLUGINS: "grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource"
@@ -28,3 +26,5 @@ services:
     volumes:
       # 挂载数据
       - ./grafana/data:/var/lib/grafana
+      # 插件https://grafana.com/api/plugins/grafana-clock-panel/versions/1.0.3/download
+      - ./grafana/plugins:/var/lib/grafana/plugins
