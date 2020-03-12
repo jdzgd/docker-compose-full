@@ -1,17 +1,29 @@
 version: '3.3'
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
+    image: "docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}"
     container_name: elasticsearch_apm
-    restart: always
+    volumes:
+      - ./elasticsearch/logs/:/usr/share/logs/
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
-      - 9200:9200
+      #      9200作为Http协议，主要用于外部通讯
+      #      9300作为Tcp协议，jar之间就是通过tcp协议通讯
+      - "9200:9200"
+      - "9300:9300"
     environment:
-      discovery.type: single-node
+      TZ: Asia/Shanghai
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - apm
+#    environment:
+#      discovery.type: single-node
     ulimits:
       memlock:
         soft: -1
         hard: -1
+
   oap:
     image: apache/skywalking-oap-server:${TAG}
     container_name: oap
@@ -19,16 +31,18 @@ services:
       - elasticsearch
     links:
       - elasticsearch
-    restart: always
+#    restart: always
     ports:
       - 11800:11800
       - 12800:12800
     environment:
       SW_STORAGE: elasticsearch
       SW_STORAGE_ES_CLUSTER_NODES: elasticsearch:9200
+    networks:
+      - apm
   ui:
-    image: skywalking/ui:${TAG}
-    container_name: ui
+    image: apache/skywalking-ui:${SKYWALKING_TAG}
+    container_name: skywalking_ui
     depends_on:
       - oap
     links:
@@ -38,3 +52,8 @@ services:
       - 8080:8080
     environment:
       SW_OAP_ADDRESS: oap:12800
+    networks:
+      - apm
+networks:
+  apm:
+    driver: bridge
