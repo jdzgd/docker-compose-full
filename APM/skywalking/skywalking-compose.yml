@@ -14,11 +14,10 @@ services:
       - "9300:9300"
     environment:
       TZ: Asia/Shanghai
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      discovery.type: single-node
     networks:
       - apm
-#    environment:
-#      discovery.type: single-node
     ulimits:
       memlock:
         soft: -1
@@ -38,6 +37,7 @@ services:
     environment:
       SW_STORAGE: elasticsearch
       SW_STORAGE_ES_CLUSTER_NODES: elasticsearch:9200
+      TZ: Asia/Shanghai
     networks:
       - apm
   ui:
@@ -52,6 +52,9 @@ services:
       - 8080:8080
     environment:
       SW_OAP_ADDRESS: oap:12800
+      TZ: Asia/Shanghai
+#      collector.ribbon.listOfServers: oap:12800
+#      security.user.admin.password: 123456
     networks:
       - apm
 networks:

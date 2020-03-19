@@ -12,7 +12,7 @@ services:
       INFLUXDB_REPORTING_DISABLED: "false"
     volumes:
       # 挂载数据
-      - ./inluxdb/data:/var/lib/influxdb
+      - ./influxdb/data:/var/lib/influxdb
   grafana:
     image: grafana/grafana:master-ubuntu
     container_name: grafana

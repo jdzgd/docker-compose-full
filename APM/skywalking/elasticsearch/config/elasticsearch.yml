@@ -3,7 +3,7 @@ cluster.name: "elasticsearch-cluster"
 #https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-discovery-bootstrap-cluster.html
 node.name: master
 discovery.seed_hosts: ["127.0.0.1", "[::1]"]
-cluster.initial_master_nodes: ["master"]
+#cluster.initial_master_nodes: ["master"]
 network.host: 0.0.0.0
 discovery.zen.minimum_master_nodes: 1
 
