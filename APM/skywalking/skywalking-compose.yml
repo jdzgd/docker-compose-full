@@ -8,13 +8,15 @@ services:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
-      #      9200作为Http协议，主要用于外部通讯
-      #      9300作为Tcp协议，jar之间就是通过tcp协议通讯
+      # 9200作为Http协议，主要用于外部通讯
+      # 9300作为Tcp协议，jar之间就是通过tcp协议通讯
       - "9200:9200"
       - "9300:9300"
     environment:
       TZ: Asia/Shanghai
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      # 在这种情况下，节点将选择自己的主节点，并且不会将集群与任何其他节点连接起来。
+      # https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
     networks:
       - apm
